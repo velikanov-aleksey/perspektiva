@@ -49,7 +49,16 @@
     if (touch) $$('.card--photo video').forEach(v => vio.observe(v));
     // команда разворачивает баннер — один раз, когда блок на экране
     const bandVid = $('video.band__img');
-    if (bandVid) new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { o.disconnect(); playVid(bandVid); } }, { threshold: 0.45 }).observe(bandVid);
+    if (bandVid) {
+      // играет, пока блок на экране: разворачивают баннер → 3 секунды на надписи → снова
+      let bandOn = false, bandTimer = 0;
+      bandVid.addEventListener('ended', () => { clearTimeout(bandTimer); bandTimer = setTimeout(() => { if (bandOn) { bandVid.currentTime = 0; playVid(bandVid); } }, 3000); });
+      new IntersectionObserver(es => {
+        bandOn = es[0].isIntersecting;
+        if (bandOn) { if (bandVid.ended || bandVid.paused) { if (bandVid.ended) bandVid.currentTime = 0; playVid(bandVid); } }
+        else { clearTimeout(bandTimer); bandVid.pause(); }
+      }, { threshold: 0.25 }).observe(bandVid);
+    }
   }
 
   // ---------- счётчики в цифрах ----------
@@ -152,7 +161,7 @@
   // ---------- карта и города ----------
   // Подразделения и их руководители (из «Схемы взаимодействия»). На всех номерах есть MAX.
   const BRANCHES = [
-    { hub: 'Самара', main: true, cities: ['Самара', 'Тольятти'], head: 'Мякишев Владимир Владимирович', post: 'Менеджер по работе с клиентами', phone: '+79171304044', email: 'info@perspektiva63.com' },
+    { hub: 'Самара', main: true, cities: ['Самара', 'Тольятти'], head: 'Багышев Идраг', post: 'Менеджер по работе с клиентами', phone: '+79879500164', email: 'info@perspektiva63.com' },
     { hub: 'Казань', cities: ['Казань'], head: 'Сотникова Марина Дмитриевна', phone: '+79220381784', email: 'perspektiva.kazan@mail.ru' },
     { hub: 'Набережные Челны', cities: ['Набережные Челны', 'Альметьевск', 'Чебоксары'], head: 'Сурин Максим Александрович', phone: '+79631570348', email: 'perspektiva.nabchelny@mail.ru' },
     { hub: 'Ульяновск', cities: ['Ульяновск', 'Димитровград'], head: 'Лобзинёв Валерий Викторович', phone: '+79061462725', email: 'perspektiva.ulyanovsk@mail.ru' },
