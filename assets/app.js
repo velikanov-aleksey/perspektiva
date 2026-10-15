@@ -272,6 +272,7 @@
   }
 
   // ---------- заявка ----------
+  const LEAD_ENDPOINT = 'https://formsubmit.co/ajax/kliningslon@gmail.com';
   const form = $('#leadForm');
   if (form) {
     form.addEventListener('submit', async e => {
@@ -285,9 +286,19 @@
       const btn = $('button[type=submit]', form);
       btn.disabled = true; btn.textContent = 'Отправляем…';
       try {
-        const r = await Promise.reject(new Error('preview'));
+        // Пока сайт на статическом хостинге — заявки уходят на почту через FormSubmit.
+        // На своём хостинге с PHP можно переключить на /send.php (Telegram/MAX-бот).
+        const r = await fetch(LEAD_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            _subject: 'Заявка с сайта «Перспектива»', _template: 'table', _captcha: 'false',
+            'Компания': fd.get('company') || '—', 'Имя': fd.get('name'), 'Телефон': fd.get('phone'),
+            'Город': fd.get('city') || '—', 'Задача': fd.get('task') || '—', 'Расчёт калькулятора': fd.get('calc') || '—'
+          })
+        });
         const j = await r.json();
-        if (!j.ok) throw new Error();
+        if (!(j.success === true || j.success === 'true')) throw new Error();
         form.reset();
         msg.classList.add('ok'); msg.textContent = 'Спасибо! Менеджер свяжется с вами в ближайшее время.';
         if (window.ym) try { ym(window.YM_ID, 'reachGoal', 'lead'); } catch (_) {}

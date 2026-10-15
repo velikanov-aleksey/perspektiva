@@ -413,3 +413,6 @@ details p{margin:12px 0 0;color:var(--muted)}
   .calc__rate{font-size:38px}
   .form{padding:20px}
 }
+
+/* кнопки MAX скрыты, пока не вписана ссылка на профиль */
+a[href*="max.ru/TODO"]{display:none!important}
