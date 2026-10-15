@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Личный кабинет заказчика — «Перспектива»</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1d44e0">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../cabinet/cabinet.css">
+</head>
+<body class="cab">
+<header class="nav is-solid"><div class="wrap nav__in">
+  <a class="brand" href="../index.html"><img src="../assets/logo.svg" width="36" height="36" alt=""><span>перспектива<small>личный кабинет</small></span></a>
+  <span class="cab__demo">Демо-версия</span>
+  <button class="btn btn--sm btn--ghost" id="logout" hidden>Выйти</button>
+</div></header>
+
+<main class="page">
+  <!-- ВХОД -->
+  <section class="wrap login" id="login">
+    <h1>Вход для заказчиков</h1>
+    <p class="sub">Следите за сменой, меняйте заявку и смотрите отработанные часы в одном месте.</p>
+    <form class="login__form" id="loginForm" novalidate>
+      <label class="f"><span>Телефон</span><input type="tel" name="phone" id="lPhone" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></label>
+      <label class="f" id="codeWrap" hidden><span>Код из SMS</span><input type="text" name="code" id="lCode" inputmode="numeric" maxlength="4" placeholder="••••"></label>
+      <p class="form__msg" id="lMsg"></p>
+      <button class="btn btn--full" type="submit" id="lBtn">Получить код</button>
+      <p class="calc__note">Демо: войдите по номеру +7 (987) 944-40-30, код — 1234. Данные в кабинете тестовые.</p>
+    </form>
+  </section>
+
+  <!-- КАБИНЕТ -->
+  <section class="wrap dash" id="dash" hidden>
+    <div class="dash__head">
+      <div>
+        <p class="eyebrow" id="dObject"></p>
+        <h1 id="dCompany"></h1>
+      </div>
+      <div class="dash__mgr">
+        <span class="calc__lbl">Ваш менеджер</span>
+        <b>Менеджер «Перспективы»</b>
+        <a href="tel:+78462037001">+7 (846) 203-70-01</a>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div><span>На смене сейчас</span><b id="kNow">0</b></div>
+      <div><span>Направлены на завтра</span><b id="kTomorrow">0</b></div>
+      <div><span>Часов за месяц</span><b id="kHours">0</b></div>
+      <div><span>Сумма за месяц, без НДС</span><b id="kSum">0</b></div>
+    </div>
+
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="order" aria-selected="true">Заявка</button>
+      <button role="tab" data-tab="now">На смене</button>
+      <button role="tab" data-tab="tomorrow">На завтра</button>
+      <button role="tab" data-tab="worked">Отработано</button>
+      <button role="tab" data-tab="history">История</button>
+    </nav>
+
+    <div class="tab" id="tab-order">
+      <h2>Заявка на персонал</h2>
+      <div class="order__day">
+        <label class="f"><span>На дату</span><input type="date" id="oDate"></label>
+      </div>
+      <div class="order" id="orderRows"></div>
+      <label class="f"><span>Комментарий для менеджера</span><textarea id="oComment" rows="2" placeholder="Например: двоих на разгрузку к 7:00"></textarea></label>
+      <p class="form__msg" id="oMsg"></p>
+      <button class="btn" id="oSend">Отправить изменения заявки</button>
+    </div>
+
+    <div class="tab" id="tab-now" hidden>
+      <h2>На смене сейчас</h2>
+      <div class="tbl" id="nowList"></div>
+    </div>
+
+    <div class="tab" id="tab-tomorrow" hidden>
+      <h2>Направлены на завтра</h2>
+      <div class="tbl" id="tomorrowList"></div>
+    </div>
+
+    <div class="tab" id="tab-worked" hidden>
+      <h2>Отработано за месяц</h2>
+      <div class="tbl" id="workedList"></div>
+    </div>
+
+    <div class="tab" id="tab-history" hidden>
+      <h2>История заявок</h2>
+      <div class="tbl" id="historyList"></div>
+    </div>
+  </section>
+</main>
+<script src="../cabinet/cabinet.js" defer></script>
+</body>
+</html>
